@@ -54,19 +54,115 @@
     <button>Console Trace</button>
     <button>Trigger a Global Error</button>
   </section>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "f97f8af2233544b198f2450d12292a75"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+                        
+  <script>
+    TrackJS.track('Testing TrackJS!');
+                        
     let calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', () => {
+      try{
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch(err){
+        alert(err.message);
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
     // TODO - Make buttons functional
-  </script>
+    //Console Log Demo
+    errorBtns[0].addEventListener('click', () => {
+      console.log("yay");
+    });
+    //Console Error Demo
+    errorBtns[1].addEventListener('click', () => {
+      console.error("I'm sorry, Dave. I'm afraid I can't do that.");
+    });
+    //Console Dir
+    errorBtns[2].addEventListener('click', () => {
+      console.dir(document.body);
+    });
+    //Console dirxml
+    errorBtns[3].addEventListener('click', () => {
+      console.dirxml(document.body);
+    });
+    //Console Group Start
+    errorBtns[4].addEventListener('click', () => {
+      console.group("CSE classes");
+      console.info("CSE 110");
+      console.info("CSE 198");
+    });
+    //Console Group End
+    errorBtns[5].addEventListener('click', () => {
+      console.groupEnd("CSE classes");
+    });
+    //Console Table
+    errorBtns[6].addEventListener('click', () => {
+      console.table(errorBtns);
+    });
+    //Start Timer
+    errorBtns[7].addEventListener('click', () => {
+      console.time();
+    });
+    //End Timer
+    errorBtns[8].addEventListener('click', () => {
+      console.timeEnd();
+    });
+    //Console Trace
+    errorBtns[9].addEventListener('click', () => {
+      console.trace();
+    });
+    //Trigger a Gloabl Error
+    errorBtns[10].addEventListener('click', () => {
+      blank;
+      try{
+        blank;
+      } catch (ReferenceError){
+        alert("No such variable >:(, ");
+        console.log("Global error");
+      }
+    });
+    try{
+      console.log(document.domyassignment());
+    } catch (err){
+      console.log("That function doesnt exist on document");
+    }
+    finally{
+      console.log("done :)");
+    }
+    try{
+      throw new SyntaxError("cry ;-;");
+    } catch(err){
+      console.log(err.message);
+    }
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "ValidationError"; // (2)
+      }
+      }
+
+      function test() {
+        throw new ValidationError("Whoops!");
+      }
+
+      try {
+        test();
+      } catch(err) {
+        alert(err.message); // Whoops!
+        alert(err.name); // ValidationError
+        alert(err.stack); // a list of nested calls with line numbers for each
+    }
+</script>
 </body>
 </html>
